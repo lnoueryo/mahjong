@@ -7,10 +7,10 @@ export class Mahjong {
   readonly players: Array<Player>
   readonly table: Table
   readonly wall: Wall
-  constructor(users: User[], game: string) {
-    this.players = this.createPlayers(users);
-    this.table = this.createTable(game);
-    this.wall = this.createWall();
+  constructor(users: User[], game: string, players?: Array<Player>, table?: Table, wall?: Wall) {
+    this.players = players || this.createPlayers(users);
+    this.table = table || this.createTable(game);
+    this.wall = wall || this.createWall();
   }
   private createPlayers(users: User[]) {
     const players = users.map((user: User) => {
@@ -23,6 +23,19 @@ export class Mahjong {
     return new Table(game, 1);
   }
   private createWall() {
+    const tiles = this.createTiles();
+    const shuffleTiles = this.arrayShuffle(tiles);
+    return new Wall(shuffleTiles)
+  }
+  // tileDealing() {
+  //   this.players.forEach((player: Player) => {
+  //       this.wall.drawTile
+  //   })
+  // }
+  drawTile() {
+    return this.wall.pickupTile()
+  }
+  private createTiles() {
     const varieties = ['characters', 'wheels', 'bamboo']
     const honourNames = ['white', 'green', 'red', 'east', 'south', 'west', 'north']
     const tiles: Array<Tile> = [];
@@ -39,6 +52,15 @@ export class Mahjong {
         tiles.push(new Honour(name))
       }
     })
-    return new Wall(tiles);
+    return tiles;
+  }
+  private arrayShuffle(array: any[]) {
+    for(var i = (array.length - 1); 0 < i; i--)  {
+      var r = Math.floor(Math.random() * (i + 1));
+      var tmp = array[i];
+      array[i] = array[r];
+      array[r] = tmp;
+    }
+    return array;
   }
 }
