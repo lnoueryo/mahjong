@@ -2,12 +2,16 @@ import { Wall } from './wall'
 import { Suit, Honour, Tile } from './tile'
 import { Table } from './table'
 import { Player, User } from './player'
-import { PlayerTile } from './playerTile'
+
 export class Mahjong {
+  readonly users: User[]
+  readonly game: string
   readonly players: Array<Player>
   readonly table: Table
   readonly wall: Wall
   constructor(users: User[], game: string, players?: Array<Player>, table?: Table, wall?: Wall) {
+    this.users = users;
+    this.game = game;
     this.players = players || this.createPlayers(users);
     this.table = table || this.createTable(game);
     this.wall = wall || this.createWall();
@@ -41,17 +45,8 @@ export class Mahjong {
       return player.dealTiles(tiles);
     })
     const wall = this.wall.removeTiles(wallTiles)
-    return new Mahjong([], '', players, this.table, wall)
+    return new Mahjong(this.users, this.game, players, this.table, wall)
   }
-  // drawTile(currntPlayer: Player) {
-  //   const tile = this.wall.pickupWallTile();
-  //   const wall = this.wall.removeTile(tile);
-  //   const drawingPlayer = currntPlayer.drawTile(tile);
-  //   const players = this.players.map((player: Player) => {
-  //     return player.user.id === drawingPlayer.user.id ? drawingPlayer : player;
-  //   })
-  //   return new Mahjong([], '', players, this.table, wall)
-  // }
   private createTiles() {
     const varieties = ['characters', 'wheels', 'bamboo']
     const honourNames = ['white', 'green', 'red', 'east', 'south', 'west', 'north']

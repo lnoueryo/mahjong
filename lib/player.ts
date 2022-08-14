@@ -1,4 +1,3 @@
-import { PlayerTile } from './playerTile'
 import { Tile } from './tile'
 export interface User {
   id: number
