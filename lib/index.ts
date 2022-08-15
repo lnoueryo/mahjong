@@ -30,26 +30,11 @@ export class Mahjong {
     const shuffleTiles = this.arrayShuffle(tiles);
     const tileWall = shuffleTiles.slice(0, 122);
     const deadWall = shuffleTiles.slice(122);
-    return new Wall(tileWall, deadWall)
-  }
-  dealTiles() {
-    const wallTiles: Array<Tile> = [];
-    const players = this.players.map((player: Player, i: number) => {
-      const tiles = [];
-      for (let j = 0; j < 13; j++) {
-        const index = i * 13 + j;
-        const tile = this.wall.pickupWallTile(index);
-        tiles.push(tile)
-        wallTiles.push(tile)
-      }
-      return player.dealTiles(tiles);
-    })
-    const wall = this.wall.removeTiles(wallTiles)
-    return new Mahjong(this.users, this.game, players, this.table, wall)
+    return new Wall(tileWall, deadWall);
   }
   private createTiles() {
-    const varieties = ['characters', 'wheels', 'bamboo']
-    const honourNames = ['white', 'green', 'red', 'east', 'south', 'west', 'north']
+    const varieties = ['characters', 'wheels', 'bamboo'];
+    const honourNames = ['white', 'green', 'red', 'east', 'south', 'west', 'north'];
     const tiles: Array<Tile> = [];
     let id = 1;
     varieties.forEach((variety: string) => {
@@ -63,7 +48,7 @@ export class Mahjong {
     
     honourNames.forEach((name: string) => {
       for (let i = 0; i < 4; i++) {
-        tiles.push(new Honour(name, id))
+        tiles.push(new Honour(name, id));
         id += 1;
       }
     })
@@ -78,4 +63,30 @@ export class Mahjong {
     }
     return array;
   }
+  dealTiles() {
+    const wallTiles: Array<Tile> = [];
+    const players = this.players.map((player: Player, i: number) => {
+      const tiles: Array<Tile> = [];
+      for (let j = 0; j < 13; j++) {
+        const index = i * 13 + j;
+        const tile = this.wall.pickupWallTile(index);
+        tiles.push(tile);
+        wallTiles.push(tile);
+      }
+      return player.dealTiles(tiles);
+    })
+    const wall = this.wall.removeTiles(wallTiles);
+    return new Mahjong(this.users, this.game, players, this.table, wall);
+  }
+  // drawTile() {
+  //   const currentPlayer = 
+  //   const firstIndex = 0;
+  //   const tile = this.wall.pickupWallTile(firstIndex);
+  //   const drawingPlayer = currentPlayer.dealTiles([tile]);
+  //   const players = this.players.map((player: Player) => {
+  //     return player.user.id === drawingPlayer.user.id ? drawingPlayer : player;
+  //   })
+  //   const wall = this.wall.removeTiles([tile]);
+  //   return new Mahjong(this.users, this.game, players, this.table, wall);
+  // }
 }
